@@ -301,7 +301,8 @@ function main() {
 
   function tick(now) {
     if (playing && !hoverFrozen) {
-      const dt = (now - lastFrame) / 1000;
+      // Clamp dt to avoid huge jumps (tab hidden / GC pause) which look like teleporting.
+      const dt = Math.min(0.05, (now - lastFrame) / 1000);
       lastFrame = now;
       t = (t + speed * dt + DAY_MIN) % DAY_MIN;
       elSlider.value = String(t);
